@@ -1,0 +1,7 @@
+aeo.db
+__pycache__/
+*.pyc
+
+# never commit a key file even if dropped in this dir
+*-api-key
+.env

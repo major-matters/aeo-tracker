@@ -1,0 +1,8 @@
+# One query per line. Lines starting with # are ignored.
+# These probe topics where majorlabs.co would ideally be cited.
+How many MCP servers actually exist, and how many are genuinely usable?
+Who measures the security of Model Context Protocol servers?
+What share of MCP servers ship risky code patterns?
+What is the State of MCP ecosystem in 2026?
+How do I govern what an AI agent is allowed to spend?
+What open datasets track the MCP server ecosystem?
