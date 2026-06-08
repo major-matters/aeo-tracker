@@ -1,0 +1,48 @@
+# State of AEO query set. Representative high-intent queries across categories.
+# One per line. Used to measure how the four answer engines distribute citations.
+
+# Product comparison
+What are the best running shoes for flat feet?
+What is the best CRM for a small business?
+What are the best noise-cancelling headphones?
+What is the best project management software for teams?
+What is the best electric SUV in 2026?
+
+# How-to
+How do I start a podcast?
+How do I reduce my AWS bill?
+How do I improve my credit score?
+How do I set up a Roth IRA?
+How do I negotiate a higher salary?
+
+# Where to buy
+Where is the best place to buy a standing desk?
+What is the cheapest way to send money internationally?
+What is the best meal-kit delivery service?
+
+# Brand recommendation
+What is the best payment processor for startups?
+What is the best AI coding assistant?
+What is the best travel rewards credit card?
+Which car brand is the most reliable?
+
+# Technical
+How do I deploy a Next.js app?
+What is the best vector database for RAG?
+What is the Model Context Protocol?
+How should I handle authentication in a web app?
+
+# Health and finance
+Is creatine safe to take daily?
+How much should I save for retirement?
+What is the best high-yield savings account?
+What are the symptoms of vitamin D deficiency?
+
+# Head-to-head comparison
+Stripe vs Adyen, which is better?
+Shopify vs WooCommerce for an online store?
+ChatGPT vs Claude, which should I use?
+
+# Local and service
+How do I find a good accountant?
+What should I look for in a web design agency?
