@@ -1,5 +1,7 @@
 # AEO Citation Tracker
 
+[![MCP Surface Check: low surface](https://img.shields.io/badge/MCP_Surface_Check-low-4FA86A)](https://majorlabs.co/security)
+
 **Which answer engines cite your URLs.** Read-only, bring-your-own-keys, built to compound over time.
 
 Answer engines (ChatGPT, Claude, Perplexity, Gemini) are replacing search for a growing share of questions. The optimisation target moves with them: not "do I rank" but "do the models cite me." This tool asks a set of real questions across every configured engine and records whether a target domain shows up in the citations, run after run, so you can watch the number move.
