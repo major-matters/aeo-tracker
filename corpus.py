@@ -38,9 +38,11 @@ def host(url: str) -> str:
 
 
 def source_type(h: str) -> str:
-    if h.endswith("wikipedia.org"):
+    # Exact host or a subdomain of it; never a substring, so "notwikipedia.org" and
+    # "stackexchange.com.example" do not match.
+    if h == "wikipedia.org" or h.endswith(".wikipedia.org"):
         return "wikipedia"
-    if h in ("reddit.com", "quora.com") or "stackexchange.com" in h or h == "stackoverflow.com":
+    if h in ("reddit.com", "quora.com", "stackexchange.com", "stackoverflow.com") or h.endswith(".stackexchange.com"):
         return "forum"
     if h in ("youtube.com", "youtu.be", "x.com", "twitter.com", "linkedin.com", "facebook.com", "instagram.com", "tiktok.com", "medium.com"):
         return "social_ugc"
