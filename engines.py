@@ -28,6 +28,16 @@ from typing import List, Optional
 
 ROOT = Path(__file__).resolve().parent.parent  # major-labs/
 
+# A provider answer is kilobytes. Refuse anything that could exhaust memory before it is parsed.
+MAX_RESPONSE_BYTES = 5 * 1024 * 1024
+
+
+def _read_capped(fp) -> bytes:
+    data = fp.read(MAX_RESPONSE_BYTES + 1)
+    if len(data) > MAX_RESPONSE_BYTES:
+        raise urllib.error.URLError(f"response body exceeds {MAX_RESPONSE_BYTES} bytes; refused")
+    return data
+
 
 @dataclass
 class Result:
@@ -46,13 +56,13 @@ def _post(url: str, headers: dict, payload: dict, timeout: int = 60):
     for attempt in range(3):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310 - fixed provider https endpoints
-                return json.loads(resp.read().decode("utf-8"))
+                return json.loads(_read_capped(resp).decode("utf-8"))
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and attempt < 2:
                 time.sleep(2 * (attempt + 1))
                 continue
             try:
-                return json.loads(e.read().decode("utf-8"))  # provider error JSON, e.g. {"error": ...}
+                return json.loads(_read_capped(e).decode("utf-8"))  # provider error JSON, e.g. {"error": ...}
             except Exception:
                 raise
         except (urllib.error.URLError, TimeoutError):
@@ -63,8 +73,9 @@ def _post(url: str, headers: dict, payload: dict, timeout: int = 60):
 
 
 def _redact(text: str, *secrets: Optional[str]) -> str:
-    """Strip any API key out of a string before it is stored or printed. Gemini
-    puts its key in the request URL, so an error could otherwise carry it."""
+    """Strip any API key out of a string before it is stored or printed. Keys travel
+    in request headers (never in a URL), so this is a second guard for the case where
+    a provider echoes a header back in an error body."""
     for s in secrets:
         if s and len(s) > 8:
             text = text.replace(s, "***")
@@ -187,9 +198,11 @@ class Gemini(Engine):
     def query(self, prompt: str) -> Result:
         try:
             model = "gemini-2.5-flash"
+            # The key goes in the x-goog-api-key header, not the URL, so it cannot land in a
+            # log line, an error string or a proxy's access log.
             d = _post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.key}",
-                {},
+                f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                {"x-goog-api-key": self.key},
                 {"contents": [{"parts": [{"text": prompt}]}], "tools": [{"google_search": {}}]},
             )
             urls = []
